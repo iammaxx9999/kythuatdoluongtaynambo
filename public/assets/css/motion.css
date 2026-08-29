@@ -1,0 +1,685 @@
+/* ============================================================
+   motion.css - toan bo hoat hinh cua trang, gom mot cho.
+   Chi hoat hinh transform/opacity de trinh duyet chay tren GPU.
+   ============================================================ */
+
+:root {
+  /* Duong cong toc do: mo phong chuyen dong that, khong tuyen tinh */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* bat dau nhanh, dung lai muot */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); /* nay nhe khi ket thuc */
+
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 560ms;
+  --dur-reveal: 720ms;
+}
+
+/* ---------- 1. Xuat hien khi cuon toi ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Bien the: truot ngang, dung cho khoi hai cot */
+[data-reveal='left'] {
+  transform: translate3d(-32px, 0, 0);
+}
+[data-reveal='right'] {
+  transform: translate3d(32px, 0, 0);
+}
+[data-reveal='zoom'] {
+  transform: scale(0.96);
+}
+
+/* ---------- 2. Anh hien dan khi tai xong ---------- */
+.img-fade {
+  opacity: 0;
+  transition: opacity 520ms var(--ease-out);
+}
+
+.img-fade.is-loaded {
+  opacity: 1;
+}
+
+/* ---------- 3. Man hinh cho ---------- */
+.site-loader {
+  transition: opacity 420ms var(--ease-out), visibility 420ms;
+}
+
+.site-loader__spinner {
+  animation: spin 720ms cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+}
+
+/* ---------- 4. Hero ---------- */
+.hero__slide {
+  transition: opacity 900ms var(--ease-in-out), visibility 900ms;
+}
+
+/* Anh nen phong rat cham tao chieu sau (hieu ung Ken Burns) */
+.hero__slide.is-active .hero__media {
+  animation: heroZoom 12s var(--ease-out) forwards;
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Chu trong hero: tung dong troi len lech nhau */
+.hero__content > * {
+  animation: heroRise 760ms var(--ease-out) both;
+}
+
+.hero__content > *:nth-child(1) {
+  animation-delay: 60ms;
+}
+.hero__content > *:nth-child(2) {
+  animation-delay: 150ms;
+}
+.hero__content > *:nth-child(3) {
+  animation-delay: 240ms;
+}
+.hero__content > *:nth-child(4) {
+  animation-delay: 330ms;
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Doi slide: chu cu mo dan roi chu moi troi len */
+.hero__stage.is-swapping-out .hero__content {
+  opacity: 0;
+  transform: translate3d(0, -14px, 0);
+  transition: opacity 240ms var(--ease-in-out), transform 240ms var(--ease-in-out);
+}
+
+.hero__stage.is-swapping-in .hero__content > * {
+  animation: heroRise 620ms var(--ease-out) both;
+}
+
+/* ---------- 5. Header ---------- */
+.site-header {
+  transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
+}
+
+/* Gach chan chay tu giua ra khi tro chuot vao muc menu */
+.site-nav__link {
+  position: relative;
+  transition: color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+
+.site-nav__link::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+  opacity: 0;
+}
+
+.site-nav__link:hover::after {
+  transform: scaleX(1);
+  opacity: 0.35;
+}
+
+.site-nav__link.is-active::after {
+  transform: scaleX(1);
+  opacity: 0;
+}
+
+/* Thanh tien do cuon trang */
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.site-header.is-scrolled .scroll-progress {
+  opacity: 1;
+}
+
+/* Menu di dong: truot xuong mem */
+@media (max-width: 900px) {
+  .site-nav {
+    transition: transform 380ms var(--ease-out), opacity 300ms var(--ease-out), visibility 380ms;
+    transform: translate3d(0, -14px, 0);
+  }
+
+  .site-header.is-menu-open .site-nav {
+    transform: none;
+  }
+
+  .site-header.is-menu-open .site-nav__link {
+    animation: heroRise 420ms var(--ease-out) both;
+  }
+
+  .site-header.is-menu-open .site-nav__link:nth-child(1) {
+    animation-delay: 40ms;
+  }
+  .site-header.is-menu-open .site-nav__list li:nth-child(2) .site-nav__link {
+    animation-delay: 80ms;
+  }
+  .site-header.is-menu-open .site-nav__list li:nth-child(3) .site-nav__link {
+    animation-delay: 120ms;
+  }
+  .site-header.is-menu-open .site-nav__list li:nth-child(4) .site-nav__link {
+    animation-delay: 160ms;
+  }
+}
+
+/* ---------- 6. Nut ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+/* Vet sang luot qua khi tro chuot vao */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.22) 45%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  transition: transform 620ms var(--ease-out);
+  pointer-events: none;
+}
+
+.btn:hover::before {
+  transform: translateX(110%);
+}
+
+.btn:hover {
+  transform: translate3d(0, -2px, 0);
+}
+
+.btn:active {
+  transform: translate3d(0, 0, 0) scale(0.985);
+  transition-duration: 90ms;
+}
+
+.link-arrow::after {
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.link-arrow:hover::after {
+  transform: rotate(-45deg) translate(4px, 4px);
+}
+
+/* ---------- 7. The (card) ---------- */
+/* Bong do dat o lop rieng: chi doi opacity nen khong bat trinh duyet ve lai bong */
+.card,
+.product-card,
+.feature-tile {
+  position: relative;
+  transition: transform var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+.card::after,
+.product-card::after,
+.feature-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.13);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.card:hover,
+.feature-tile:hover {
+  transform: translate3d(0, -5px, 0);
+}
+
+.product-card:hover {
+  transform: translate3d(0, -6px, 0);
+}
+
+.card:hover::after,
+.product-card:hover::after,
+.feature-tile:hover::after {
+  opacity: 1;
+}
+
+.product-card:active {
+  transform: translate3d(0, -2px, 0) scale(0.995);
+  transition-duration: 110ms;
+}
+
+.product-card__media img,
+.feature-tile__media img {
+  transition: transform 720ms var(--ease-out);
+  will-change: transform;
+}
+
+.product-card:hover .product-card__media img {
+  transform: scale(1.06);
+}
+
+.feature-tile:hover .feature-tile__media img {
+  transform: scale(1.05);
+}
+
+/* ---------- 8. Loc san pham ---------- */
+.product-grid > * {
+  transition: transform 460ms var(--ease-out), opacity 300ms var(--ease-out);
+}
+
+.product-card.is-leaving {
+  opacity: 0;
+  transform: scale(0.94) translate3d(0, 8px, 0);
+}
+
+.product-card.is-entering {
+  animation: cardIn 480ms var(--ease-out) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.filter-chip {
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.filter-chip:active {
+  transform: scale(0.96);
+}
+
+/* ---------- 9. Cua so chi tiet san pham ---------- */
+.modal__backdrop {
+  animation: fadeIn 260ms var(--ease-out) both;
+}
+
+.modal__dialog {
+  animation: dialogIn 420ms var(--ease-spring) both;
+}
+
+.modal.is-closing .modal__backdrop {
+  animation: fadeIn 200ms var(--ease-in-out) reverse both;
+}
+
+.modal.is-closing .modal__dialog {
+  animation: dialogOut 200ms var(--ease-in-out) both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dialogOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.985);
+  }
+}
+
+.gallery-strip img {
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+
+.gallery-strip img:hover {
+  transform: translate3d(0, -3px, 0);
+  border-color: var(--brand);
+}
+
+/* ---------- 10. Thong ke ---------- */
+.stat__value {
+  font-variant-numeric: tabular-nums; /* so khong nhay ngang khi dem */
+}
+
+/* ---------- 11. O nhap lieu ---------- */
+.field__control {
+  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out);
+}
+
+.field__error {
+  display: block;
+  opacity: 0;
+  transform: translate3d(0, -4px, 0);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+
+.field.has-error .field__error {
+  opacity: 1;
+  transform: none;
+}
+
+.field.has-error .field__control {
+  animation: shake 420ms var(--ease-out);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+.form-success {
+  animation: dialogIn 520ms var(--ease-spring) both;
+}
+
+/* ---------- 12. Nut lien he noi ---------- */
+.fab__toggle {
+  transition: transform var(--dur-base) var(--ease-spring), background var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.fab__toggle:hover {
+  transform: scale(1.07) translate3d(0, -2px, 0);
+}
+
+.fab__toggle:active {
+  transform: scale(0.97);
+  transition-duration: 100ms;
+}
+
+.fab__item {
+  transition: opacity 260ms var(--ease-out), transform 320ms var(--ease-spring);
+}
+
+.fab__btn {
+  transition: transform var(--dur-base) var(--ease-spring), filter var(--dur-base) var(--ease-out);
+}
+
+.fab__btn:hover {
+  transform: scale(1.1) translate3d(0, -1px, 0);
+}
+
+.fab__bubble {
+  transition: opacity 360ms var(--ease-out), transform 420ms var(--ease-spring);
+}
+
+.fab__pulse {
+  animation: fabPulse 2.6s var(--ease-out) infinite;
+}
+
+@keyframes fabPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+/* ---------- 13. Thong bao ---------- */
+.toast {
+  animation: toastIn 380ms var(--ease-spring) both;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- 14. Dot dieu huong slideshow ---------- */
+.hero__dot {
+  transition: background var(--dur-base) var(--ease-out), width var(--dur-base) var(--ease-out);
+}
+
+.hero__dot:hover {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.hero--dark .hero__dot:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.hero__toggle {
+  transition: transform var(--dur-base) var(--ease-spring), background var(--dur-base) var(--ease-out);
+}
+
+.hero__toggle:hover {
+  transform: scale(1.1);
+}
+
+/* ---------- 15. Moc thoi gian & chip ---------- */
+.timeline__item {
+  transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+
+.timeline__item:hover {
+  transform: translate3d(0, -3px, 0);
+}
+
+.cert-chip {
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+
+.cert-chip:hover {
+  transform: translate3d(0, -2px, 0);
+  border-color: var(--brand);
+}
+
+.info-item {
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.info-item__icon {
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+
+.info-item:hover .info-item__icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* ============================================================
+   Ton trong lua chon "giam chuyen dong" cua nguoi dung.
+   Tat toan bo hoat hinh nhung van giu trang dung chuc nang.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .img-fade {
+    opacity: 1;
+  }
+
+  .btn::before,
+  .fab__pulse {
+    display: none;
+  }
+}
+
+/* ---------- 16. Nội dung vừa được làm mới từ CMS ---------- */
+/* Nháy nhẹ một cái để người xem biết trang vừa cập nhật, không gây chói mắt */
+body.is-refreshed main,
+body.is-refreshed .site-header,
+body.is-refreshed .site-footer {
+  animation: contentRefreshed 700ms var(--ease-out) both;
+}
+
+@keyframes contentRefreshed {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-refreshed main,
+  body.is-refreshed .site-header,
+  body.is-refreshed .site-footer {
+    animation: none;
+  }
+}
+
+/* ---------- 17. Khối "Hình ảnh thực tế" ---------- */
+.gallery__slide {
+  transition: opacity 620ms var(--ease-in-out), visibility 620ms;
+}
+
+/* Ảnh đang hiện phóng rất chậm, tạo cảm giác sống động */
+.gallery__slide.is-active img {
+  animation: galleryDrift 9s var(--ease-out) forwards;
+}
+
+@keyframes galleryDrift {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.gallery__caption {
+  animation: heroRise 620ms var(--ease-out) both;
+  animation-delay: 120ms;
+}
+
+.gallery__nav {
+  transition: transform var(--dur-base) var(--ease-spring), background var(--dur-base) var(--ease-out);
+}
+
+.gallery__nav:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+
+.gallery__nav:active {
+  transform: scale(0.94);
+  transition-duration: 100ms;
+}
+
+.gallery__thumb {
+  transition: opacity var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.gallery__thumb:hover {
+  opacity: 1;
+  transform: translate3d(0, -2px, 0);
+}
+
+.gallery__thumb img {
+  transition: transform 520ms var(--ease-out);
+}
+
+.gallery__thumb:hover img {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__slide.is-active img,
+  .gallery__caption {
+    animation: none;
+  }
+}

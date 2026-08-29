@@ -1,0 +1,36 @@
+{
+  "name": "scale-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website gioi thieu dich vu ban va thi cong lap dat can + CMS quan tri",
+  "type": "module",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "seed": "node server/data/seed.js --force",
+    "test": "node test/ui-guard.mjs && node test/form-binding.mjs && node test/hero.mjs && node test/tokens.mjs && node test/directory.mjs && node test/links.mjs && node test/services.mjs && node test/session.mjs && node test/media.mjs && node test/security.mjs && node test/deploy.mjs && node test/e2e.mjs",
+    "test:ui": "node test/ui-guard.mjs",
+    "test:session": "node test/session.mjs",
+    "test:media": "node test/media.mjs",
+    "test:services": "node test/services.mjs",
+    "test:security": "node test/security.mjs",
+    "test:form": "node test/form-binding.mjs",
+    "test:tokens": "node test/tokens.mjs",
+    "test:deploy": "node test/deploy.mjs",
+    "test:hero": "node test/hero.mjs",
+    "test:directory": "node test/directory.mjs",
+    "test:links": "node test/links.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}

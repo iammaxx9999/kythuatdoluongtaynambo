@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560">
+  <defs><linearGradient id="pg5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#EEF2F7"/></linearGradient></defs>
+  <rect width="800" height="560" fill="url(#pg5)"/>
+  <circle cx="660" cy="90" r="150" fill="#1428A0" opacity="0.06"/>
+  <g transform="translate(0,40)"><path d="M400 120v70" stroke="#64748B" stroke-width="10" stroke-linecap="round"/>
+        <path d="M370 190h60l-30 40z" fill="#64748B"/>
+        <rect x="330" y="230" width="140" height="120" rx="14" fill="#1428A0"/>
+        <rect x="352" y="252" width="96" height="44" rx="5" fill="#0F172A" opacity="0.85"/>
+        <text x="400" y="284" text-anchor="middle" font-family="Consolas,monospace" font-size="22" font-weight="700" fill="#FF4D4D">5000</text>
+        <path d="M400 350v40" stroke="#64748B" stroke-width="8"/>
+        <path d="M370 390a30 34 0 1 0 60 0" fill="none" stroke="#64748B" stroke-width="10" stroke-linecap="round"/></g>
+  <text x="40" y="520" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="600" fill="#64748B">Cân treo 5 tấn</text>
+</svg>

@@ -1,0 +1,25 @@
+node_modules/
+
+# Bí mật - TUYỆT ĐỐI không đưa lên git
+.env
+.env.*
+!.env.example
+# Tệp mẫu (không chứa bí mật) phải được đưa lên git. Quy tắc `.env.*` ở trên so
+# theo TÊN TỆP nên nó bắt luôn cả tệp trong thư mục con -> cần mở lại từng tệp.
+!deploy/.env.production.example
+server/data/credentials.json
+server/data/.jwt-secret
+*.pem
+*.key
+
+# Dữ liệu và tệp người dùng tải lên
+server/data/db.json
+public/uploads/*
+!public/uploads/.gitkeep
+
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

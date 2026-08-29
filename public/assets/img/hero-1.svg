@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 900" width="1920" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E8EDF7"/><stop offset="55%" stop-color="#F7F9FC"/><stop offset="100%" stop-color="#E8EDF7"/>
+    </linearGradient>
+    <radialGradient id="hr1" cx="0.75" cy="0.35" r="0.7">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="900" fill="url(#hg1)"/>
+  <rect width="1920" height="900" fill="url(#hr1)"/>
+  
+        <g opacity="0.92">
+          <rect x="980" y="470" width="520" height="150" rx="10" fill="#1428A0" opacity="0.9"/>
+          <rect x="1500" y="510" width="210" height="110" rx="12" fill="#1428A0"/>
+          <rect x="1530" y="530" width="90" height="52" rx="6" fill="#ffffff" opacity="0.55"/>
+          <circle cx="1120" cy="640" r="42" fill="#0F172A" opacity="0.85"/><circle cx="1120" cy="640" r="17" fill="#ffffff" opacity="0.6"/>
+          <circle cx="1260" cy="640" r="42" fill="#0F172A" opacity="0.85"/><circle cx="1260" cy="640" r="17" fill="#ffffff" opacity="0.6"/>
+          <circle cx="1600" cy="640" r="42" fill="#0F172A" opacity="0.85"/><circle cx="1600" cy="640" r="17" fill="#ffffff" opacity="0.6"/>
+          <rect x="880" y="686" width="900" height="26" rx="6" fill="#1428A0" opacity="0.55"/>
+          <rect x="840" y="712" width="980" height="10" rx="5" fill="#0F172A" opacity="0.18"/>
+        </g>
+  <rect y="760" width="1920" height="140" fill="#ffffff" opacity="0.35"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900">
+  <defs>
+    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbe6f2"/><stop offset="100%" stop-color="#f4f7fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#sky1)"/>
+  <circle cx="1148.0" cy="144.0" r="70" fill="#ffffff" opacity="0.7"/>
+  
+        <rect x="0" y="558.0" width="1400" height="342.0" fill="#c9ae86"/>
+        <rect x="196.00000000000003" y="414.0" width="1008.0" height="180.0" rx="6" fill="#9aa3ae"/>
+        <rect x="224.0" y="432.0" width="952.0000000000001" height="144.0" fill="#7d848e"/>
+        <rect x="252.0" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="341.6" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="431.20000000000005" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="520.8" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="610.4000000000001" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="700.0" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="789.6" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="879.2" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="968.8000000000001" y="360.0" width="6" height="234.0" fill="#5b6b"/><rect x="1058.4" y="360.0" width="6" height="234.0" fill="#5b6b"/>
+        <path d="M252.0 396.0H1148.0" stroke="#5b6b7b" stroke-width="4"/><path d="M252.0 420.0H1148.0" stroke="#5b6b7b" stroke-width="4"/><path d="M252.0 444.0H1148.0" stroke="#5b6b7b" stroke-width="4"/><path d="M252.0 468.0H1148.0" stroke="#5b6b7b" stroke-width="4"/><path d="M252.0 492.0H1148.0" stroke="#5b6b7b" stroke-width="4"/>
+        <rect x="868.0" y="162.0" width="70.0" height="396.0" fill="#f0b429"/>
+        <path d="M903.0 162.0h280.0" stroke="#f0b429" stroke-width="14"/>
+        <path d="M1120.0 171.0v108.0" stroke="#4a5568" stroke-width="5"/>
+  <rect x="0" y="810" width="1400" height="90" fill="#0f172a" opacity="0.06"/>
+  <text x="46" y="858" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="30" font-weight="600" fill="#475569">Đổ móng cân ô tô 80 tấn</text>
+  <text x="46" y="60" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="600" fill="#94a3b8">ẢNH MINH HỌA — thay bằng ảnh thật trong CMS</text>
+</svg>

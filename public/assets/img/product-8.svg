@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560">
+  <defs><linearGradient id="pg8" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#EEF2F7"/></linearGradient></defs>
+  <rect width="800" height="560" fill="url(#pg8)"/>
+  <circle cx="660" cy="90" r="150" fill="#0B63CE" opacity="0.06"/>
+  <g transform="translate(0,40)"><path d="M340 140h120l30 90H310z" fill="#0B63CE" opacity="0.85"/>
+        <rect x="330" y="230" width="140" height="30" rx="6" fill="#475569"/>
+        <path d="M330 280h140v110H330z" fill="#CBD5E1"/>
+        <path d="M345 300h110v70H345z" fill="#ffffff" opacity="0.7"/>
+        <rect x="150" y="400" width="500" height="30" rx="15" fill="#0B63CE" opacity="0.5"/>
+        <circle cx="200" cy="415" r="18" fill="#475569"/><circle cx="600" cy="415" r="18" fill="#475569"/></g>
+  <text x="40" y="520" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="600" fill="#64748B">Hệ thống đóng bao</text>
+</svg>

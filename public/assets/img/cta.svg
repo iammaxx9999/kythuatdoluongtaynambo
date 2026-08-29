@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500">
+  <defs><linearGradient id="g_ct" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F6F8FB"/><stop offset="100%" stop-color="#E7EDF6"/></linearGradient></defs>
+  <rect width="1200" height="500" fill="url(#g_ct)"/>
+  <circle cx="1020.0" cy="75.0" r="125.0" fill="#0B63CE" opacity="0.07"/>
+  <rect x="192.0" y="130.0" width="528.0" height="150.0" rx="16" fill="#fff" stroke="#0B63CE" stroke-width="3"/><rect x="480.0" y="230.0" width="528.0" height="150.0" rx="16" fill="#0B63CE" opacity="0.16"/>
+  <text x="72.0" y="465.0" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25" font-weight="600" fill="#64748B">Tư vấn giải pháp cân</text>
+</svg>

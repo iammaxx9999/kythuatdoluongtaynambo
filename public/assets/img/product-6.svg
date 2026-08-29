@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560">
+  <defs><linearGradient id="pg6" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#EEF2F7"/></linearGradient></defs>
+  <rect width="800" height="560" fill="url(#pg6)"/>
+  <circle cx="660" cy="90" r="150" fill="#0B63CE" opacity="0.06"/>
+  <g transform="translate(0,40)"><rect x="250" y="200" width="300" height="190" rx="14" fill="#ffffff" stroke="#CBD5E1" stroke-width="3"/>
+        <rect x="270" y="150" width="260" height="120" rx="8" fill="#0B63CE" opacity="0.10" stroke="#0B63CE" stroke-width="2"/>
+        <circle cx="400" cy="270" r="46" fill="#E2E8F0"/>
+        <rect x="286" y="326" width="228" height="44" rx="6" fill="#0B63CE" opacity="0.14"/>
+        <text x="400" y="357" text-anchor="middle" font-family="Consolas,monospace" font-size="24" font-weight="700" fill="#0B63CE">0.0001 g</text></g>
+  <text x="40" y="520" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="600" fill="#64748B">Cân phân tích 220g</text>
+</svg>

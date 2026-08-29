@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1428A0" />
+    <title>Đang tải…</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/layout.css" />
+    <link rel="stylesheet" href="/assets/css/components.css" />
+    <link rel="stylesheet" href="/assets/css/motion.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Bỏ qua đến nội dung chính</a>
+
+    <div id="site-loader" class="site-loader" aria-live="polite">
+      <span class="site-loader__spinner" aria-hidden="true"></span>
+      <span class="sr-only">Đang tải nội dung</span>
+    </div>
+
+    <header id="site-header" class="site-header" data-component="header"></header>
+
+    <main id="main">
+      <section id="trang-chu" class="section section--hero" data-component="hero" tabindex="-1"></section>
+      <div data-component="stats"></div>
+      <div data-component="services"></div>
+      <section id="san-pham" class="section" data-component="products" tabindex="-1"></section>
+      <div data-component="features"></div>
+      <section id="gioi-thieu" class="section" data-component="about" tabindex="-1"></section>
+      <div data-component="gallery"></div>
+      <div data-component="cta"></div>
+      <section id="lien-he" class="section" data-component="contact" tabindex="-1"></section>
+    </main>
+
+    <footer class="site-footer" data-component="footer"></footer>
+
+    <div data-component="floating-contact"></div>
+    <div id="product-modal" class="modal" hidden></div>
+    <div id="toast-root" class="toast-root" aria-live="polite"></div>
+
+    <script type="module" src="/assets/js/main.js"></script>
+  </body>
+</html>

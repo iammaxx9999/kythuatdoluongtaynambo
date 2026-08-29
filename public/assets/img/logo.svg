@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" width="240" height="48" role="img" aria-label="Viet Phat Scale">
+  <rect x="0" y="8" width="32" height="32" rx="8" fill="#1428A0"/>
+  <path d="M8 30h16M10 30l6-13 6 13" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="16" cy="14" r="2.4" fill="#fff"/>
+  <text x="42" y="26" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" font-weight="700" fill="#0F172A" letter-spacing="0.6">VIỆT PHÁT</text>
+  <text x="42" y="39" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="9" font-weight="600" fill="#1428A0" letter-spacing="3.2">SCALE SYSTEM</text>
+</svg>

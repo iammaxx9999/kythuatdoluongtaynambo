@@ -1,0 +1,401 @@
+/* ============================================================
+   layout.css - container, header, section, footer, grid
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--narrow {
+  max-width: 1100px;
+}
+
+.section {
+  padding-block: clamp(64px, 8vw, 120px);
+  scroll-margin-top: var(--header-h);
+}
+
+.section--hero {
+  padding: 0;
+}
+
+.section--soft {
+  background: var(--bg-soft);
+}
+
+.section--dark {
+  background: var(--bg-dark);
+  color: #fff;
+}
+
+.section__head {
+  max-width: 780px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.section__head > * + * {
+  margin-top: 14px;
+}
+
+.section__head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------------- Header ---------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: var(--line);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+/**
+ * Ba khoảng cách dưới đây quyết định độ thoáng của thanh header. Dùng clamp()
+ * để chúng co giãn theo bề ngang màn hình: màn rộng thì thoáng, màn hẹp thì tự
+ * thu lại vừa đủ, không cần thêm media query và không bao giờ tràn hàng.
+ *
+ * Cú pháp clamp(nhỏ nhất, theo màn hình, lớn nhất) — muốn thoáng hơn nữa thì
+ * tăng con số cuối.
+ */
+.site-header__inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  /* Khoảng cách logo ↔ menu ↔ nút bên phải */
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.site-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.site-header__logo {
+  height: 34px;
+  width: auto;
+}
+
+.site-header__brand-text {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.05rem;
+}
+
+.site-nav {
+  flex: 1 1 auto;
+}
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  /* Khoảng cách giữa hai mục menu — trước đây 6px nên các nền bo tròn khi rê
+     chuột gần dính vào nhau, nhìn như một dải liền */
+  gap: clamp(6px, 1.1vw, 14px);
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  /* Khoảng đệm trong mỗi mục — quyết định bề rộng nền bo tròn khi rê chuột */
+  padding-inline: clamp(13px, 1.4vw, 20px);
+  border-radius: var(--radius-pill);
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.site-nav__link:hover {
+  color: var(--ink);
+  background: var(--bg-soft);
+}
+
+.site-nav__link.is-active {
+  color: var(--brand);
+  font-weight: 600;
+  background: var(--brand-soft);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.site-header__burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 0;
+  place-items: center;
+}
+
+.site-header__burger span,
+.site-header__burger span::before,
+.site-header__burger span::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+.site-header__burger span::before,
+.site-header__burger span::after {
+  content: '';
+  position: absolute;
+}
+
+.site-header__burger span::before {
+  transform: translateY(-6px);
+}
+.site-header__burger span::after {
+  transform: translateY(6px);
+}
+
+.site-header.is-menu-open .site-header__burger span {
+  background: transparent;
+}
+.site-header.is-menu-open .site-header__burger span::before {
+  transform: rotate(45deg);
+}
+.site-header.is-menu-open .site-header__burger span::after {
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .site-header__burger {
+    display: grid;
+    position: relative;
+  }
+
+  .site-nav {
+    position: fixed;
+    inset: var(--header-h) 0 auto 0;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    padding: 12px var(--gutter) 24px;
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--dur) var(--ease);
+    box-shadow: var(--shadow);
+  }
+
+  .site-header.is-menu-open .site-nav {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .site-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  .site-nav__link {
+    height: 50px;
+    padding-inline: 12px;
+    font-size: 1.02rem;
+  }
+
+  .site-header__actions .btn--sm {
+    display: none;
+  }
+}
+
+/* ---------------- Footer ---------------- */
+/* Hai tông màu, chọn trong CMS. Dùng biến để các quy tắc bên dưới dùng chung. */
+.site-footer {
+  --footer-bg: #101114;
+  --footer-fg: #cbd5e1;
+  --footer-strong: #ffffff;
+  --footer-muted: #94a3b8;
+  --footer-line: rgba(255, 255, 255, 0.12);
+  --footer-logo-filter: brightness(0) invert(1);
+
+  background: var(--footer-bg);
+  color: var(--footer-fg);
+  padding-block: clamp(48px, 6vw, 76px) 28px;
+}
+
+.site-footer--light {
+  --footer-bg: var(--bg-soft);
+  --footer-fg: var(--ink-2);
+  --footer-strong: var(--ink);
+  --footer-muted: var(--ink-3);
+  --footer-line: var(--line);
+  --footer-logo-filter: none;
+
+  border-top: 1px solid var(--line);
+}
+
+.site-footer a {
+  color: var(--footer-fg);
+  transition: color var(--dur) var(--ease);
+}
+
+.site-footer a:hover {
+  color: var(--footer-strong);
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(auto-fit, minmax(150px, 1fr));
+  gap: clamp(24px, 4vw, 56px);
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--footer-line);
+}
+
+@media (max-width: 900px) {
+  .site-footer__top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .site-footer__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.site-footer__logo {
+  height: 34px;
+  width: auto;
+  margin-bottom: 16px;
+  filter: var(--footer-logo-filter);
+}
+
+.site-footer__about {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--footer-muted);
+  max-width: 42ch;
+}
+
+.site-footer__col-title {
+  color: var(--footer-strong);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+.site-footer__links li + li {
+  margin-top: 10px;
+}
+
+.site-footer__links a {
+  font-size: 0.9rem;
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  font-size: 0.82rem;
+  color: var(--footer-muted);
+}
+
+.site-footer__legal,
+.site-footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+
+.site-footer__bottom-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.site-footer__bottom-links a {
+  color: var(--footer-muted);
+}
+
+.site-footer__bottom-links a:hover {
+  color: var(--footer-strong);
+}
+
+/* Dòng ghi công đơn vị thiết kế */
+.site-footer__credit {
+  color: var(--footer-muted);
+}
+
+.site-footer__credit strong,
+.site-footer__credit a {
+  color: var(--footer-fg);
+  font-weight: 600;
+}
+
+.site-footer__credit a:hover {
+  color: var(--footer-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .site-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
