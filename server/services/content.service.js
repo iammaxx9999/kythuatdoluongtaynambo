@@ -1,6 +1,7 @@
 import db from '../lib/db.js';
 import { deepMerge, sanitize } from '../lib/helpers.js';
 import { badRequest } from '../lib/errors.js';
+import { redactSecrets } from '../lib/redact.js';
 
 /** Cac nhanh noi dung ma CMS duoc phep sua. */
 export const CONTENT_SECTIONS = [
@@ -20,7 +21,14 @@ export async function getPublicSite() {
     .filter((item) => item.enabled !== false)
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-  return {
+  /**
+   * Bo cac khoa nghe nhu bi mat truoc khi ra ngoai.
+   *
+   * Danh sach duoi day da la DANH SACH CHO PHEP (chi nhung nhanh nay ra ngoai),
+   * nen hom nay khong co gi lot. redactSecrets() lo cho ngay mai: ai them mot o
+   * kieu "Khoa API" vao settings thi no bi chan tai day, khong ra /api/site.
+   */
+  return redactSecrets({
     settings: data.settings,
     hero: {
       ...data.hero,
@@ -36,7 +44,7 @@ export async function getPublicSite() {
       // Thu tu hien thi = thu tu trong mang (CMS keo tha de sap xep)
       channels: (data.floatingContact?.channels ?? []).filter((channel) => channel.enabled !== false),
     },
-  };
+  });
 }
 
 /** Du lieu day du cho CMS (van khong tra password hash). */

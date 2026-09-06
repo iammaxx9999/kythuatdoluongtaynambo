@@ -116,7 +116,7 @@ tiên server tự băm mật khẩu và ghi đè tệp — chuỗi gốc biến 
 ```bash
 npm start       # chạy
 npm run dev     # tự khởi động lại khi sửa code server
-npm test        # 12 bộ, 438 phép kiểm tra
+npm test        # 12 bộ, 464 phép kiểm tra
 npm run seed    # khôi phục nội dung về dữ liệu mẫu (không đụng tài khoản)
 ```
 
@@ -134,9 +134,9 @@ thật trong `server/data/`.
 | Nghiệp vụ (19) | `npm run test:services` | Đọc/ghi nội dung, CRUD sản phẩm, chống prototype pollution |
 | Phiên (9) | `npm run test:session` | Gia hạn, hết hạn, thu hồi khi đổi mật khẩu |
 | Bộ sưu tập (20) | `npm run test:media` | Dò ảnh đang dùng, xoá khỏi ổ đĩa, quét khôi phục |
-| Bảo mật (28) | `npm run test:security` | Băm mật khẩu, giả mạo token, CSRF, rate limit, CSP |
+| Bảo mật (36) | `npm run test:security` | Băm mật khẩu, giả mạo token, CSRF, rate limit, CSP |
 | Triển khai (50) | `npm run test:deploy` | Nginx / PM2 / `.env` / `.gitignore` có khớp nhau không |
-| End-to-end (104) | — | Khởi động server thật, kiểm tra toàn luồng |
+| End-to-end (122) | — | Khởi động server thật, kiểm tra toàn luồng |
 
 ## Triển khai lên VPS
 
@@ -235,6 +235,24 @@ cd /var/www/candien && ./deploy/deploy.sh
 
 Script tự: sao lưu → `git pull` → cài thư viện → chạy test → khởi động lại → gọi `/healthz` kiểm
 tra. Test không đạt thì **dừng và giữ nguyên bản đang chạy**.
+
+### Việc BẮT BUỘC làm trước khi mở cho khách
+
+| # | Việc | Vì sao |
+| --- | --- | --- |
+| 1 | Đổi mật khẩu CMS (hoặc đặt `ADMIN_PASSWORD` mới, xong xoá dòng đó) | Mật khẩu đang dùng ở máy phát triển không nên mang lên máy chủ |
+| 2 | Sinh `CMS_PATH` **mới**, chỉ điền trong `.env` trên máy chủ | Chuỗi `/quan-tri-x7k2` đã lỡ nằm trong lịch sử git — coi như đã lộ, đừng dùng lại |
+| 3 | `chmod 600 .env` và `chmod 700 server/data` | Máy chủ nhiều người dùng thì mặc định ai cũng đọc được |
+| 4 | Bật HTTPS **trước** khi đặt `NODE_ENV=production` | Cookie phiên có cờ `Secure`, không có HTTPS là không đăng nhập được |
+| 5 | Đặt `TRUST_PROXY=1` | Chạy sau Nginx mà quên thì giới hạn đăng nhập sai tính chung cho mọi người |
+| 6 | Bật cron sao lưu | `db.json` chứa cả yêu cầu liên hệ của khách (tên, số điện thoại) |
+| 7 | Kho git để **private** nếu có thể | Không có bí mật nào trong code, nhưng ít lộ cấu trúc vẫn hơn |
+
+Sinh đường dẫn CMS mới:
+
+```bash
+node -e "console.log('/qt-' + require('crypto').randomBytes(6).toString('hex'))"
+```
 
 ### Bốn cái bẫy khi lên production
 

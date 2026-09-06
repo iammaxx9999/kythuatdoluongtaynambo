@@ -390,6 +390,83 @@ try {
     walk(path.join(ROOT, 'public'));
     assert(risky.length === 0, risky.join(', '));
   });
+
+  /* ================= Lưới chặn bí mật ra API công khai ================= */
+  console.log('\n8. Lưới chặn bí mật ra API công khai');
+
+  const { redactSecrets, isSecretKey } = await import('../server/lib/redact.js');
+  const buildDb = (await import('../server/data/defaults.js')).default;
+
+  /**
+   * Điều quan trọng nhất: bộ lọc phải VÔ HẠI với dữ liệu hiện tại.
+   * Bản đầu tiên cấm thẳng từ 'key' và đã xoá sạch nhãn thông số của mọi sản
+   * phẩm (bảng thông số dùng { key: 'Tải trọng', value: '60kg' }). Một bộ lọc
+   * bảo mật làm hỏng nội dung thì tệ hơn là không có.
+   */
+  await test('bộ lọc không đụng vào dữ liệu thật', () => {
+    const data = buildDb();
+    const removed = [];
+    const out = redactSecrets(data, removed);
+    assert(removed.length === 0, `đã bỏ nhầm: ${removed.slice(0, 5).join(', ')}`);
+    assert(JSON.stringify(out) === JSON.stringify(data), 'dữ liệu bị đổi');
+  });
+
+  await test('nhãn thông số sản phẩm (key) được giữ', () => {
+    const out = redactSecrets({ specs: [{ key: 'Tải trọng', value: '60kg' }] });
+    assert(out.specs[0].key === 'Tải trọng', JSON.stringify(out));
+  });
+
+  await test('từ khoá SEO (keywords) được giữ', () => {
+    assert(!isSecretKey('keywords') && !isSecretKey('key') && !isSecretKey('monkey'));
+  });
+
+  await test('khoá nghe như bí mật thì bị bỏ', () => {
+    const cases = [
+      'apiKey', 'api_key', 'googleMapsApiKey', 'privateKey', 'accessKey', 'sessionKey',
+      'clientSecret', 'smtpPassword', 'accessToken', 'refreshToken', 'passwordHash',
+      'jwtSecret', 'signature', 'bearerToken', 'credentials', 'passphrase',
+    ];
+    const sot = cases.filter((name) => !isSecretKey(name));
+    assert(sot.length === 0, `lọt: ${sot.join(', ')}`);
+  });
+
+  await test('bỏ được cả khoá nằm sâu trong dữ liệu', () => {
+    const out = redactSecrets({ a: { b: [{ c: { apiKey: 'x', ten: 'giữ' } }] } });
+    assert(out.a.b[0].c.apiKey === undefined, 'còn sót');
+    assert(out.a.b[0].c.ten === 'giữ', 'bỏ nhầm');
+  });
+
+  await test('/api/site đi qua bộ lọc', async () => {
+    const source = fs.readFileSync(path.join(ROOT, 'server/services/content.service.js'), 'utf8');
+    assert(/return redactSecrets\(/.test(source), 'getPublicSite chưa bọc redactSecrets');
+  });
+
+  /* ================= Tệp mẫu không được chứa giá trị thật ================= */
+  console.log('\n9. Tệp mẫu đưa lên git');
+
+  const envProd = fs.readFileSync(path.join(ROOT, 'deploy/.env.production.example'), 'utf8');
+
+  /**
+   * Đường dẫn CMS là biện pháp giấu cửa quản trị khỏi bot dò. Ghi giá trị thật
+   * vào tệp mẫu (được commit lên git) là công bố luôn cửa đó — đúng thứ việc
+   * đổi đường dẫn đang cố tránh.
+   */
+  await test('mẫu .env KHÔNG chứa đường dẫn CMS thật', () => {
+    const value = /^CMS_PATH=(.+)$/m.exec(envProd)?.[1]?.trim() ?? '';
+    assert(value.length > 0, 'thiếu dòng CMS_PATH');
+    assert(
+      /DOI|THAY|XXX|CHANGE|placeholder/i.test(value),
+      `đang là "${value}" — phải để chỗ trống, giá trị thật chỉ điền trong .env trên máy chủ`,
+    );
+  });
+
+  await test('mẫu .env để trống mật khẩu và khoá ký', () => {
+    for (const name of ['ADMIN_PASSWORD', 'JWT_SECRET']) {
+      const value = new RegExp(`^${name}=(.*)$`, 'm').exec(envProd)?.[1]?.trim() ?? null;
+      assert(value === '', `${name} phải để trống, đang là "${value}"`);
+    }
+  });
+
 } catch (error) {
   console.error('\nLỖI:', error.message);
   failed += 1;

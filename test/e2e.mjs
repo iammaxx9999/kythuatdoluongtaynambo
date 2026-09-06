@@ -379,6 +379,62 @@ async function run() {
   await call('PATCH', '/api/content/settings', { body: { maintenance: { enabled: false } } });
   check('tắt xong -> trang chủ trả 200 ngay', (await fetch(`${BASE}/`)).status, 200);
   check('...và khách lạ đọc được /api/site', (await fetch(`${BASE}/api/site`)).status, 200);
+
+  /* ---------------- 10. Đường dẫn lạ trả 404 thật ---------------- */
+  console.log('\n10. Đường dẫn không tồn tại');
+
+  /**
+   * Trước đây mọi đường dẫn lạ đều trả index.html kèm mã 200 ("soft 404").
+   * Hậu quả: máy quét thấy /admin, /wp-admin, /.env đều "có thật"; Google thấy
+   * vô số địa chỉ cùng một nội dung rồi đánh giá thấp cả trang; và liên kết
+   * hỏng trong nội dung không bao giờ bị phát hiện.
+   */
+  for (const p of ['/admin', '/wp-admin', '/.env', '/khong-co-trang-nay', '/san-pham']) {
+    check(`${p} -> 404`, (await fetch(`${BASE}${p}`)).status, 404);
+  }
+
+  const notFound = await fetch(`${BASE}/khong-co-trang-nay`);
+  const notFoundHtml = await notFound.text();
+  check('trang 404 là HTML tử tế', notFoundHtml.includes('Không tìm thấy trang'), true);
+  check('trang 404 có lối về trang chủ', notFoundHtml.includes('href="/"'), true);
+  check(
+    'trang 404 KHÔNG gợi ý đường dẫn quản trị',
+    notFoundHtml.includes('/cms') || notFoundHtml.includes('quan-tri'),
+    false,
+  );
+  check('trang 404 bảo bot đừng lập chỉ mục', /noindex/.test(notFoundHtml), true);
+
+  // Nhưng trang chủ và tệp tĩnh thì vẫn phải chạy
+  check('trang chủ vẫn 200', (await fetch(`${BASE}/`)).status, 200);
+  check('/index.html vẫn 200', (await fetch(`${BASE}/index.html`)).status, 200);
+  check('tệp tĩnh vẫn 200', (await fetch(`${BASE}/assets/css/base.css`)).status, 200);
+  check('trang quản trị vẫn 200', (await fetch(`${BASE}/cms/`)).status, 200);
+
+  /* ---------------- 11. Không lọt bí mật ra API công khai ---------------- */
+  console.log('\n11. API công khai không lọt bí mật');
+
+  /**
+   * Thử nhét một ô "nghe như khoá API" vào cấu hình qua chính CMS, rồi kiểm tra
+   * nó KHÔNG ra tới /api/site. Đây là lưới chặn cuối cho trường hợp sau này có
+   * ai thêm ô kiểu "Khoá Google Maps" hay "Mật khẩu SMTP".
+   */
+  await call('PATCH', '/api/content/settings', {
+    body: { googleMapsApiKey: 'AIzaSy-KHOA-BI-MAT', smtpPassword: 'matkhau', keywords: 'cân điện tử' },
+  });
+
+  const leaked = await call('GET', '/api/site', { auth: false });
+  check('khoá API không ra API công khai', /AIzaSy-KHOA-BI-MAT/.test(leaked.text), false);
+  check('mật khẩu không ra API công khai', /matkhau/.test(leaked.text), false);
+  check('từ khoá SEO thì vẫn ra bình thường', leaked.json?.settings?.keywords, 'cân điện tử');
+  check(
+    'nhãn thông số sản phẩm (khoá "key") không bị lọc nhầm',
+    Boolean(leaked.json?.products?.[0]?.specs?.[0]?.key),
+    true,
+  );
+
+  // CMS vẫn đọc được giá trị đó để còn sửa/xoá
+  const adminView = await call('GET', '/api/cms/site');
+  check('CMS vẫn thấy giá trị đó để sửa', adminView.json?.settings?.googleMapsApiKey, 'AIzaSy-KHOA-BI-MAT');
 }
 
 /* ------------------------------------------------------------------ */

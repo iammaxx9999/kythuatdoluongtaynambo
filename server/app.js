@@ -8,6 +8,7 @@ import { securityHeaders, originGuard, uploadHeaders, apiRateLimit } from './mid
 import { resolveSiteUrl, sitemapHandler } from './lib/sitemap.js';
 import { optionalAuth } from './middleware/auth.js';
 import { maintenanceGuard } from './middleware/maintenance.js';
+import { notFoundPage } from './lib/not-found-page.js';
 
 export function createApp() {
   const app = express();
@@ -92,13 +93,25 @@ export function createApp() {
 
   app.use(notFoundHandler);
 
-  // Fallback: chi tra index.html cho dieu huong trang, khong tra cho tep tinh thieu
-  app.use((req, res, next) => {
-    if (req.method !== 'GET' || !req.accepts('html') || path.extname(req.path)) return next();
-    res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+  /**
+   * Duong dan khong ton tai -> tra 404 THAT.
+   *
+   * Truoc day cho la mot "SPA fallback": moi duong dan la se tra ve index.html
+   * kem ma 200. Kieu do chi dung cho ung dung nhieu route phia trinh duyet -
+   * trang nay la ONE-PAGE, cac muc chi la neo #... tren cung mot trang, nen
+   * fallback do khong phuc vu gi ma con gay hai:
+   *
+   *  - /cms, /admin, /wp-admin, /.env deu tra 200 -> may quet doan nham la co
+   *    that, va nhat ky day rac.
+   *  - Google thay vo so dia chi khac nhau cung mot noi dung (soft 404) roi
+   *    danh gia thap ca trang.
+   *  - Lien ket hong trong noi dung khong bao gio bi phat hien.
+   */
+  app.use((req, res) => {
+    res.status(404);
+    if (req.accepts('html')) return res.type('html').send(notFoundPage());
+    res.type('text/plain').send('404 - Khong tim thay trang');
   });
-
-  app.use((_req, res) => res.status(404).send('404 - Khong tim thay trang'));
 
   app.use(errorHandler);
 
